@@ -1,0 +1,13 @@
+@import "libs/normalize";
+@import "vars";
+@import "fonts";
+
+html {
+    font-size: 10px;
+}
+
+body {
+    font-family: Roboto;
+    font-weight: 400;
+    font-size: 1.5rem;
+}

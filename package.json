@@ -1,0 +1,25 @@
+{
+  "name": "gulp-scss-pug",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "gulp serve",
+    "build": "gulp build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.27.7",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-pug": "^5.0.0",
+    "gulp-sass": "^5.0.0",
+    "gulp-strip-css-comments": "^2.0.0",
+    "gulp-ttf-to-woff": "^1.0.3",
+    "gulp-webp": "^4.0.1",
+    "prettier": "^2.4.1",
+    "sass": "^1.43.4"
+  }
+}
