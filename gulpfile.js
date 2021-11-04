@@ -30,13 +30,19 @@ const clear = () => {
 };
 
 const scripts = () => {
-  return src(`${srcDir}/js/*.js`).pipe(dest(`${distDir}/js`));
+  return src(`${srcDir}/js/**/*.js`).pipe(dest(`${distDir}/js`));
 };
 
 const images = () => {
-  return src(`${srcDir}/img/*.{jpg, png}`)
+  return src(`${srcDir}/img/*.{jpg,png}`)
     .pipe(dest(`${distDir}/img`))
-    .pipe(webp())
+    .pipe(webp({ quality: 90 }))
+    .pipe(dest(`${distDir}/img`));
+};
+
+const vectors = () => {
+  return src(`${srcDir}/img/*.svg`)
+    .pipe(dest(`${distDir}/img`))
     .pipe(dest(`${distDir}/img`));
 };
 
@@ -54,13 +60,21 @@ const server = () => {
     tunnel: false
   });
 
-  watch(`${srcDir}/views/*.pug`, series(views)).on("change", sync.reload);
-  watch(`${srcDir}/scss/style.scss`, series(styles)).on("change", sync.reload);
-  watch(`${srcDir}/js/*.js`, series(scripts)).on("change", sync.reload);
-  watch(`${srcDir}/img/*.{jpg, png}`, series(images)).on("change", sync.reload);
+  watch(`${srcDir}/views/**/*.pug`, series(views)).on("change", sync.reload);
+  watch(`${srcDir}/scss/**/*.scss`, series(styles)).on("change", sync.reload);
+  watch(`${srcDir}/js/**/*.js`, series(scripts)).on("change", sync.reload);
+  watch(`${srcDir}/img/**/*.{jpg,png}`, series(images)).on(
+    "change",
+    sync.reload
+  );
+  watch(`${srcDir}/img/**/*.svg`, series(vectors)).on("change", sync.reload);
+  watch(`${srcDir}/fonts/*.ttf`, series(fonts)).on("change", sync.reload);
 };
 
-const compilingProcess = series(parallel(styles, scripts, images, fonts), views);
+const compilingProcess = series(
+  parallel(styles, scripts, images, fonts, vectors),
+  views
+);
 
 exports.serve = series(clear, compilingProcess, server);
 
