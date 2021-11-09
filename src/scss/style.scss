@@ -2,12 +2,10 @@
 @import "vars";
 @import "fonts";
 
-html {
-    font-size: 10px;
+* {
+    box-sizing: border-box;
 }
 
-body {
-    font-family: Roboto;
-    font-weight: 400;
-    font-size: 1.5rem;
+html {
+    font-size: 10px;
 }
