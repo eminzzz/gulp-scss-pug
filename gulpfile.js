@@ -60,9 +60,8 @@ const fonts = () => {
 };
 
 const robots = () => {
-  return src(`${srcDir}/robots.txt`)
-  .pipe(dest(`${distDir}`));
-}
+  return src(`${srcDir}/robots.txt`).pipe(dest(`${distDir}`));
+};
 
 const server = () => {
   sync.init({
