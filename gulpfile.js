@@ -7,13 +7,20 @@ const sync = require("browser-sync").create();
 const autoprefixer = require("gulp-autoprefixer");
 const stripCssComments = require("gulp-strip-css-comments");
 const ttfToWoff = require("gulp-ttf-to-woff");
+const sitemap = require("gulp-sitemap");
+const save = require("gulp-save");
 
 const srcDir = "./src";
 const distDir = "./dist";
+const siteUri = "http://localhost:8080";
 
 const views = () => {
   return src(`${srcDir}/views/*.pug`)
     .pipe(pug({ pretty: true }))
+    .pipe(save("before-sitemap"))
+    .pipe(sitemap({ siteUrl: siteUri }))
+    .pipe(dest(distDir))
+    .pipe(save.restore("before-sitemap"))
     .pipe(dest(distDir));
 };
 
@@ -52,6 +59,11 @@ const fonts = () => {
     .pipe(dest(`${distDir}/fonts`));
 };
 
+const robots = () => {
+  return src(`${srcDir}/robots.txt`)
+  .pipe(dest(`${distDir}`));
+}
+
 const server = () => {
   sync.init({
     server: distDir,
@@ -69,10 +81,11 @@ const server = () => {
   );
   watch(`${srcDir}/img/**/*.svg`, series(vectors)).on("change", sync.reload);
   watch(`${srcDir}/fonts/*.ttf`, series(fonts)).on("change", sync.reload);
+  watch(`${srcDir}/robots.txt`, series(robots)).on("change", sync.reload);
 };
 
 const compilingProcess = series(
-  parallel(styles, scripts, images, fonts, vectors),
+  parallel(styles, scripts, images, fonts, vectors, robots),
   views
 );
 
